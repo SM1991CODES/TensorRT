@@ -41,7 +41,7 @@ git_repository(
 new_local_repository(
     name = "cuda",
     build_file = "@//third_party/cuda:BUILD",
-    path = "/usr/local/cuda-11.4/",
+    path = "/usr/local/cuda-11.7/",
 )
 
 new_local_repository(
