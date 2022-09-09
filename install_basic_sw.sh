@@ -82,7 +82,7 @@ cd ..
 echo "======== BAZEL BUILD DONE, COPIED TO /usr/local/bin ============"
 
 echo "========= STAGE 2: BUILDING TORCH-TENSORRT C++ ==========="
-cd TensorRT/
+cd tensorrt/
 bazel build //:libtorchtrt --config pre_cxx11_abi -c opt --distdir third_party/distdir/x86_64-linux-gnu
 echo "A tarball with the include files and library can then be found in bazel-bin"
 
