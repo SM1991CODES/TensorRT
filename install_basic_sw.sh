@@ -9,20 +9,21 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 apt-get update
-apt-get install sudo
-apt-get install net-tools
-apt-get install lsb-release
-apt-get install curl zip unzip
-apt-get install openssh-server
+apt-get install -y sudo
+apt-get install -y net-tools
+apt-get install -y lsb-release
+apt-get install -y curl zip unzip
+apt-get install -y openssh-server
 service ssh stop
 echo "Port 22102" >> /etc/ssh/sshd_config # change port to 22102
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config # so we can ssh using password
 echo "service ssh restart" >> ~/.bashrc # this makes sure ssh starts when container is launched
 echo "echo \"=== docker: port: 22102, user: vrs, pass: 1234 ===\"" >> ~/.bashrc 
-apt install software-properties-common
-apt-get install gdb
-apt-get install python-is-python3
-apt-get install python3-pip
+service ssh restart
+apt install -y software-properties-common
+apt-get install -y gdb
+apt-get install -y python-is-python3
+apt-get install -y python3-pip
 echo "======== adding user vrs, ALWAYS set pass to 1234 ==========="
 adduser vrs
 usermod -aG sudo vrs
@@ -35,11 +36,20 @@ echo "export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64${LD_LIBRARY_PATH:+:${LD_
 echo "=================== BASIC SW INSTALL COMPLETE =============="
 
 echo "============== INSTALLING ROS NOETIC======================="
-wget -c https://raw.githubusercontent.com/qboticslabs/ros_install_noetic/master/ros_install_noetic.sh && chmod +x ./ros_install_noetic.sh && ./ros_install_noetic.sh
-echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+# wget -c https://raw.githubusercontent.com/qboticslabs/ros_install_noetic/master/ros_install_noetic.sh && chmod +x ./ros_install_noetic.sh && ./ros_install_noetic.sh
+# echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt install -y curl
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+sudo apt update
+sudo apt install -y ros-noetic-ros-base
 
 echo "Adding ROS to vrs path..."
 echo "source /opt/ros/noetic/setup.bash" >> /home/vrs/.bashrc
+
+sudo apt-get install -y ros-noetic-tf
+sudo apt-get install -y ros-noetic-pcl-ros
 echo "================== ROS NOETIC DESKTOP INSTALL COMPLETE =================="
 
 
@@ -58,7 +68,7 @@ echo "============ PYTORCH INSTALLATION COMPLETE =========="
 
 echo "======= INSTALLING TORCH_TENSORRT============"
 echo "========== STAGE 1: BUILDING BAZEL =========="
-apt install default-jdk
+apt install -y default-jdk
 # git clone -b v1.1.1 https://github.com/SM1991CODES/TensorRT.git
 cd ..
 export BAZEL_VERSION=$(cat tensorrt/.bazelversion)
