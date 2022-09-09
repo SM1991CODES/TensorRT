@@ -88,4 +88,5 @@ echo "A tarball with the include files and library can then be found in bazel-bi
 
 
 echo "====== STAGE 2: BUILDING TORCh-TENSORRT PYTHON ============="
-python3 py/setup.py install
+cd py
+python3 setup.py install
